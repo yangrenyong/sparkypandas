@@ -1,0 +1,17 @@
+.idea
+**/*.pyc
+tmp
+**/log
+**/output
+**/.DS_Store
+venv/
+.idea/*
+*/__pycache__/*
+*?metastore_db/*
+*/spark_warehouse/*
+.mypy_cache/
+.vscode/*
+.venv
+venv/*
+derby.log
+.DS_Store

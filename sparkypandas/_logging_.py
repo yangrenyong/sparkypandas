@@ -1,0 +1,54 @@
+#
+# MIT License
+#
+# Copyright (c) 2020 yangrenyong
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+"""
+A small basic logging module
+"""
+
+import logging
+import logging.config
+import os
+import tempfile
+
+
+class BasicLogger:
+
+    @staticmethod
+    def setup():
+        logfile = 'pyspark.log'
+
+        if 'LOG_DIRS' not in os.environ:
+            tmpdir = tempfile.gettempdir()
+            file = os.path.join(tmpdir, logfile)
+        else:
+            file = os.path.join(os.environ['LOG_DIRS'].split(',')[0], logfile)
+
+        logging.basicConfig(filename=file, level=logging.DEBUG,
+                            format='%(asctime)s.%(msecs)03d %(levelname)s %(module)s - %(funcName)s: %(message)s')
+
+    def __getattr__(self, key):
+        return getattr(logging, key)
+
+
+BasicLogger.setup()
